@@ -7,7 +7,7 @@
 #define pumpOut 7
 
 
-bool pump_input = true;
+bool pump_input = false;
 
 
 
@@ -46,8 +46,8 @@ void loop() {
   else{
     digitalWrite(pumpOut, LOW);
   }
-
-  delay(1);
+  
   // >>>>> Maybe put a short delay here <<<<<
   nh.spinOnce();
+  delay(1);
 }
