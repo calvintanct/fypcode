@@ -1,7 +1,0 @@
-The "Hello World" example seems to be working fine. The only change you must to your Arduino code on Micro or just the normal one, I only have a Micro is to add
-
-#define USE_USBCON
-
-just before
-
-#include <ros.h>
