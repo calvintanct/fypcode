@@ -90,9 +90,10 @@ void setup() {
   
   nh.initNode();
 
+  nh.subscribe(pump_in_subscriber);
+
   nh.advertise(force_publisher);
   
-  nh.subscribe(pump_in_subscriber);
 }
 
 void loop() {
@@ -115,5 +116,5 @@ void loop() {
   
   // >>>>> Maybe put a short delay here <<<<<
   nh.spinOnce();
-  delay(1);
+  delay(10);
 }

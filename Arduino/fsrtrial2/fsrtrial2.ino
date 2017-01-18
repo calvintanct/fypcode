@@ -22,6 +22,10 @@ float cond_fsr1=0;
 float rest_fsr2=0;
 float cond_fsr2=0;
 
+float time1=0;
+float time2=0;
+float timeinms=0;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -29,6 +33,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedl1y:
+  time1=millis();
   float v_in1=(float)analogRead(A1)/1023*5;
   float v_in2=(float)analogRead(A2)/1023*5;
 
@@ -57,8 +62,12 @@ void loop() {
   else{
     force2=p1h*pow(cond_fsr2,4) + p2h*pow(cond_fsr2,3) + p3h*pow(cond_fsr2,2) + p4h*cond_fsr2;
   }
+  time2=millis();
+  timeinms=time2-time1;
+  Serial.println(timeinms);
   Serial.print("force 1 : ");
   Serial.println(force1);
   Serial.print("force 2 : ");
   Serial.println(force2);
+  
 }
