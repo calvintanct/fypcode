@@ -1,0 +1,6 @@
+git init
+git config user.email "calvintanhome@outlook.com"
+git config user.name "calvintanct"
+git commit -m "first commit" //FOR FIRST COMMIT
+git remote add origin https://github.com/calvintanct/fypcode.git
+git push -u origin master //First Push
