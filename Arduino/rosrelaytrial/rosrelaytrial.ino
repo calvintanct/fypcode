@@ -3,12 +3,12 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
+#include <gripper_driver/force.h>
 #define pumpSensor 1
 #define pumpOut 7
 
 
 bool pump_input = false;
-
 
 
 /******************* ROS configuration  *******************/

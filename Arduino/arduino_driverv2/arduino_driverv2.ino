@@ -4,6 +4,7 @@
 #define pumpOut 7
 
 float force1=0;
+float force2=0;
 float rest_m= 2700; //in ohm
 float v_supply=5;
 float rest1= 10000;
@@ -26,7 +27,8 @@ bool pump_input = true;
 
 float rest_fsr1=0;
 float cond_fsr1=0;
-
+float rest_fsr2=0;
+float cond_fsr2=0;
 
 /******************* ROS configuration  *******************/
 ros::NodeHandle                     nh;
