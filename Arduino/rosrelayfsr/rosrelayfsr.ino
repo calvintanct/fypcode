@@ -116,5 +116,5 @@ void loop() {
   
   // >>>>> Maybe put a short delay here <<<<<
   nh.spinOnce();
-  delay(10);
+  delay(1000);
 }
