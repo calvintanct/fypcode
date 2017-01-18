@@ -1,0 +1,2 @@
+dmesg | grep tty
+chmod a+rxw dev/ttyUSB0

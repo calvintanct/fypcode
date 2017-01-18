@@ -1,0 +1,19 @@
+The "Hello World" example seems to be working fine. The only change you must to your Arduino code on Micro or just the normal one, I only have a Micro is to add
+
+#define USE_USBCON
+
+just before
+
+#include <ros.h>
+
+
+This Section maybe useful
+
+We just made SerialClient.py do the same:
+
+self.port = Serial(port, baud, timeout=self.timeout*0.5)
+changes to
+
+self.port = Serial(port, 0, timeout=self.timeout*0.5)
+self.port.baudrate = baud
+time.sleep(2.0) # give usb chip time to reset
