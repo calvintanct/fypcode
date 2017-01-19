@@ -22,6 +22,9 @@ gripper_driver::force                       force_msg;
 ros::Publisher force_publisher("gripper/force", &force_msg);
 
 void set_pump_input(const std_msgs::Bool &set_pump_input){
+  //char str[]= "SETTTT!!!!";
+  //nh.loginfo(str);
+  
   pump_input  = set_pump_input.data;
  }
 
@@ -38,7 +41,7 @@ void publishForce(){
   force_publisher.publish(&force_msg);
 
   char str1[]= "publishforce() finish";
-  nh.loginfo(str);
+  nh.loginfo(str1);
   return;
 }
 
@@ -76,7 +79,7 @@ void loop() {
   delay(100);
 
   char str1[]= "end loop";
-  nh.loginfo(str);
+  nh.loginfo(str1);
   
   nh.spinOnce();
 }
