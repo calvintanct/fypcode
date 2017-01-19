@@ -28,11 +28,17 @@ void set_pump_input(const std_msgs::Bool &set_pump_input){
 ros::Subscriber<std_msgs::Bool> pump_in_subscriber("gripper/pump_input", &set_pump_input);
 
 void publishForce(){
+  char str[]= "inside publishforce()";
+  nh.loginfo(str);
+  
   force1=1;
   force2=2;
   force_msg.force1=force1;
   force_msg.force2=force2;
   force_publisher.publish(&force_msg);
+
+  char str1[]= "publishforce() finish";
+  nh.loginfo(str);
   return;
 }
 
@@ -48,10 +54,16 @@ void setup() {
   nh.advertise(force_publisher);
 
   nh.subscribe(pump_in_subscriber);
+
+  char str[]= "setup finish";
+  nh.loginfo(str);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  char str[]= "in loop";
+  nh.loginfo(str);
+  
   publishForce();
 
   if(pump_input){
@@ -62,5 +74,9 @@ void loop() {
   }
 
   delay(100);
+
+  char str1[]= "end loop";
+  nh.loginfo(str);
+  
   nh.spinOnce();
 }
