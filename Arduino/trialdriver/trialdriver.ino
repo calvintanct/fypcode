@@ -19,8 +19,7 @@ ros::NodeHandle                     nh;
 std_msgs::Bool                              boolean_msg;
 gripper_driver::force                       force_msg;
 
-ros::Publisher force_publisher("gripper/force", &force_msg);      // >>>> Would be nice if you can make the topic specific to the gripper, such as: gripper/force <<<<<
-ros::Publisher pumpsensor_publisher("gripper/pump_state", &boolean_msg);
+ros::Publisher force_publisher("gripper/force", &force_msg);
 
 void set_pump_input(const std_msgs::Bool &set_pump_input){
   pump_input  = set_pump_input.data;
@@ -45,6 +44,7 @@ void setup() {
   
   nh.initNode();
 
+  nh.getHardware()->setBaud(57600);
   nh.advertise(force_publisher);
 
   nh.subscribe(pump_in_subscriber);
@@ -54,12 +54,6 @@ void loop() {
   // put your main code here, to run repeatedly:
   publishForce();
 
-  /* >>>>>> Do we really need a publihPumpState function in the loop?
-   * When the user sends a command to set the pump_high, we can just publish  
-   * the pumps status to the topic. If the user wants the pump off, we can publish  
-   * a pump off status and then turn the pump off. We dont need to constantly run the 
-   * publishPumpState() in the loop since this process takes processing time. <<<<<<<<<
-   */
   if(pump_input){
     digitalWrite(pumpOut, HIGH);
   }
@@ -68,6 +62,5 @@ void loop() {
   }
 
   delay(100);
-  // >>>>> Maybe put a short delay here <<<<<
   nh.spinOnce();
 }
