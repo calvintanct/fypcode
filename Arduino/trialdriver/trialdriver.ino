@@ -4,7 +4,7 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <gripper_driver/force.h>
-#define pumpSensor 1
+#define pumpSensor 2
 #define pumpOut 7
 
 //Force Sensor
@@ -43,6 +43,7 @@ std_msgs::Bool                              boolean_msg;
 gripper_driver::force                       force_msg;
 
 ros::Publisher force_publisher("gripper/force", &force_msg);
+ros::Publisher pumpsensor_publisher("gripper/pump_state", &boolean_msg);
 
 void set_pump_input(const std_msgs::Bool &set_pump_input){
   
@@ -93,6 +94,12 @@ void publishForce(){
   return;
 }
 
+void publishPumpState(){
+  bool pump_state = digitalRead(pumpSensor);
+  boolean_msg.data= pump_state;
+  pumpsensor_publisher.publish(&boolean_msg);
+  return;
+}
 
 void setup() {
   // put your setup code here, to run once:
@@ -105,6 +112,7 @@ void setup() {
 
   nh.getHardware()->setBaud(57600);
   nh.advertise(force_publisher);
+  nh.advertise(pumpsensor_publisher);
 
   nh.subscribe(pump_in_subscriber);
 
@@ -118,6 +126,7 @@ void loop() {
   nh.loginfo(str);
   
   publishForce();
+  publishPumpState();
 
   if(pump_input){
     digitalWrite(pumpOut, HIGH);

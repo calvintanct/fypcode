@@ -78,7 +78,7 @@ void publishForce(){
 }
 
 void publishPumpState(){
-  pumpstate = digitalRead(pumpState);
+  bool pump_state = digitalRead(pumpSensor);
   boolean_msg.data= pump_state;
   pumpsensor_publisher.publish(&boolean_msg);
   return;
