@@ -4,7 +4,7 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <gripper_driver/force.h>
-#define pumpSensor 2
+#define pumpSensor 3
 #define pumpOut 7
 
 //Force Sensor
