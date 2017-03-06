@@ -1,6 +1,10 @@
 #define USE_USBCON
 #include <ros.h>
-#define pumpSensor 1
+#include <std_msgs/String.h>
+#include <std_msgs/Float32.h>
+#include <std_msgs/Bool.h>
+#include <gripper_driver/force.h>
+#define pumpSensor 3
 #define pumpOut 7
 #define pumpAtmValve 8
 
@@ -39,6 +43,11 @@ gripper_driver::force                       force_msg;
 
 ros::Publisher force_publisher("gripper/force", &force_msg);      // >>>> Would be nice if you can make the topic specific to the gripper, such as: gripper/force <<<<<
 ros::Publisher pumpsensor_publisher("gripper/pump_state", &boolean_msg);
+
+void set_pump_input(const std_msgs::Bool &set_pump_input){
+  pump_input    = set_pump_input.data;
+  }
+
 
 ros::Subscriber<std_msgs::Bool> pump_in_subscriber("gripper/pump_input", &set_pump_input);
 
@@ -85,14 +94,11 @@ void publishPumpState(){
   return;
 }
 
-void set_pump_input(const std_msgs::Bool &set_pump_input){
-  pump_input    = set_pump_input.data;
-  }
-
 void setup() {
   // put your setup code here, to run once:
-  pinMode(pumpState, INPUT);
+  pinMode(pumpSensor, INPUT);
   pinMode(pumpOut, OUTPUT);
+  pinMode(pumpAtmValve, OUTPUT);
   
   nh.initNode();
 
@@ -122,7 +128,7 @@ void loop() {
     digitalWrite(pumpAtmValve, HIGH);
   }
 
-  delay(1)
+  delay(1);
   // >>>>> Maybe put a short delay here <<<<<
   nh.spinOnce();
 }

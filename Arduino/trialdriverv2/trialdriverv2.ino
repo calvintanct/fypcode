@@ -4,9 +4,11 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <gripper_driver/force.h>
-#define pumpSensor 1
+#define pumpSensor 3
 #define pumpOut 7
+#define pumpAtmValve 8
 
+//Force Sensor
 float force1=0;
 float force2=0;
 float rest_m= 2700; //in ohm
@@ -26,13 +28,14 @@ const float p3h= 405.0821;
 const float p4h= 914.0176;
 const float p5h= -1.3282;
 
-bool pump_state = false;
-bool pump_input = true;
-
 float rest_fsr1=0;
 float cond_fsr1=0;
 float rest_fsr2=0;
 float cond_fsr2=0;
+
+//Pump Input
+bool pump_input=false;
+
 
 /******************* ROS configuration  *******************/
 ros::NodeHandle                     nh;
@@ -40,12 +43,20 @@ ros::NodeHandle                     nh;
 std_msgs::Bool                              boolean_msg;
 gripper_driver::force                       force_msg;
 
-ros::Publisher force_publisher("gripper/force", &force_msg);      // >>>> Would be nice if you can make the topic specific to the gripper, such as: gripper/force <<<<<
+ros::Publisher force_publisher("gripper/force", &force_msg);
 ros::Publisher pumpsensor_publisher("gripper/pump_state", &boolean_msg);
+
+void set_pump_input(const std_msgs::Bool &set_pump_input){
+  
+  pump_input  = set_pump_input.data;
+ }
 
 ros::Subscriber<std_msgs::Bool> pump_in_subscriber("gripper/pump_input", &set_pump_input);
 
 void publishForce(){
+  char str[]= "inside publishforce()";
+  nh.loginfo(str);
+  
   float v_in1=(float)analogRead(A1)/1023*5;
   float v_in2=(float)analogRead(A2)/1023*5;
 
@@ -78,6 +89,9 @@ void publishForce(){
   force_msg.force1=force1;
   force_msg.force2=force2;
   force_publisher.publish(&force_msg);
+
+  char str1[]= "publishforce() finish";
+  nh.loginfo(str1);
   return;
 }
 
@@ -88,42 +102,46 @@ void publishPumpState(){
   return;
 }
 
-void set_pump_input(const std_msgs::Bool &set_pump_input){
-  pump_input    = set_pump_input.data;
-  }
-
 void setup() {
   // put your setup code here, to run once:
-  pinMode(pumpState, INPUT);
-  pinMode(pumpOut, OUTPUT);
+  Serial.begin(57600);
   
+  pinMode(pumpSensor, INPUT);
+  pinMode(pumpOut, OUTPUT);
+  pinMode(pumpAtmValve, OUTPUT);
   nh.initNode();
 
+  nh.getHardware()->setBaud(57600);
   nh.advertise(force_publisher);
   nh.advertise(pumpsensor_publisher);
 
   nh.subscribe(pump_in_subscriber);
+
+  char str[]= "setup finish";
+  nh.loginfo(str);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  char str[]= "in loop";
+  nh.loginfo(str);
+  
   publishForce();
   publishPumpState();
 
-  /* >>>>>> Do we really need a publihPumpState function in the loop?
-   * When the user sends a command to set the pump_high, we can just publish  
-   * the pumps status to the topic. If the user wants the pump off, we can publish  
-   * a pump off status and then turn the pump off. We dont need to constantly run the 
-   * publishPumpState() in the loop since this process takes processing time. <<<<<<<<<
-   */
   if(pump_input){
     digitalWrite(pumpOut, HIGH);
+    digitalWrite(pumpAtmValve, LOW);
   }
   else{
     digitalWrite(pumpOut, LOW);
+    digitalWrite(pumpAtmValve, HIGH);
   }
 
-  delay(1);
-  // >>>>> Maybe put a short delay here <<<<<
+  delay(100);
+
+  char str1[]= "end loop";
+  nh.loginfo(str1);
+  
   nh.spinOnce();
 }
