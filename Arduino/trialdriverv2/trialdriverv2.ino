@@ -131,11 +131,11 @@ void loop() {
 
   if(pump_input){
     digitalWrite(pumpOut, HIGH);
-    digitalWrite(pumpAtmValve, LOW);
+    digitalWrite(pumpAtmValve, HIGH);
   }
   else{
     digitalWrite(pumpOut, LOW);
-    digitalWrite(pumpAtmValve, HIGH);
+    digitalWrite(pumpAtmValve, LOW);
   }
 
   delay(100);
