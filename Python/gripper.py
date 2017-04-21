@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
 def move_motor(self,id, tetha):
 	if(id == 1):
-        motor_link1.move_angle(tetha, blocking = False)
+        self.motor_link1.move_angle(tetha, blocking = False)
     elif(id == 2):
         self.motor_link2.move_angle(tetha, blocking = False)
     elif(id==3):

@@ -4,6 +4,7 @@ import math
 import time
 
 class Gripper():
+
     def __init__(self):
         self.node    = rospy.init_node('new_node', anonymous=True)
         self.gripper = USB2Dynamixel_Device('/dev/ttyUSB0')
@@ -11,8 +12,9 @@ class Gripper():
         self.motor_link2= Robotis_Servo(self.gripper,2,series='MX')
         self.motor_suction= Robotis_Servo(self.gripper,3,series='MX')
 
+
     def move_motor(self,id, tetha):
-        if(id == 1):
+    	if(id == 1):
             self.motor_link1.move_angle(tetha, blocking = False)
         elif(id == 2):
             self.motor_link2.move_angle(tetha, blocking = False)
