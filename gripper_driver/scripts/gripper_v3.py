@@ -173,6 +173,8 @@ class Gripper():
 if __name__ == '__main__':
     try:
         Gripper()
+        while(not rospy.is_shutdown()):
+            pass
     except rospy.ROSInterruptException:
         pass
 

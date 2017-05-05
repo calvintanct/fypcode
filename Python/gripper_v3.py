@@ -31,11 +31,7 @@ class Gripper():
         self.motor_statemsg = motor_state()
 
         rospy.init_node('gripper', anonymous=True)
-        
         rospy.Subscriber("/motor/command", motor_command, self.Command)
-
-        while not rospy.is_shutdown():
-            rospy.sleep(1)
 
     def Command(self, data):
         if(data.gripper_ready):
@@ -124,21 +120,22 @@ class Gripper():
     #       (10(open)-180(close) - fully out position)
     #ID 3   (180(initial)-70(final open))
     #ALL ANGLE WILL BE IN THE RANGE OF -180 to 180 (need to be substracted by 180)
+    #all value must be subtracted by 180
     def gripper_ready(self):
         str="Gripper ready for side"
         rospy.loginfo(str)
-        angle1=math.radians(180)
-        angle2=math.radians(230)
-        angle3=math.radians(70)
+        angle1=math.radians(180-180)
+        angle2=math.radians(230-180)
+        angle3=math.radians(70-180)
         self.move_motor(3, angle3)
         time.sleep(2)
 
     def gripper_close(self):
         str="Gripper close to initial"
         rospy.loginfo(str)
-        angle1=math.radians(180)
-        angle2=math.radians(230)
-        angle3=math.radians(180)
+        angle1=math.radians(180-180)
+        angle2=math.radians(230-180)
+        angle3=math.radians(180-180)
         self.move_motor(1, angle1+45)
         self.move_motor(2, angle2-100)
         time.sleep(1)
@@ -152,9 +149,9 @@ class Gripper():
         str="Gripper open to ready for gripping"        
         rospy.loginfo(str)
         rospy.loginfo(str)
-        angle1=math.radians(270)
-        angle2=math.radians(10)
-        angle3=math.radians(70)
+        angle1=math.radians(270-180)
+        angle2=math.radians(10-180)
+        angle3=math.radians(70-180)
         self.move_motor(3, angle3)
         time.sleep(1)
         self.move_motor(1, angle1-45)
@@ -167,15 +164,17 @@ class Gripper():
     def gripper_standby(self):
         str="Gripper standby for front"
         rospy.loginfo(str)
-        angle1=math.radians(180)
-        angle2=math.radians(230)
-        angle3=math.radians(180)
+        angle1=math.radians(180-180)
+        angle2=math.radians(230-180)
+        angle3=math.radians(180-180)
         self.move_motor(3, angle3)
         time.sleep(2)
 
 if __name__ == '__main__':
     try:
         Gripper()
+        while(not rospy.is_shutdown()):
+            pass
     except rospy.ROSInterruptException:
         pass
 
